@@ -1,0 +1,23 @@
+{
+  "name": "mean",
+  "version": "0.1.3",
+  "dependencies": {
+    "angular": "1.2.8",
+    "angular-resource": "1.2.8",
+    "angular-cookies": "1.2.8",
+    "angular-mocks": "1.2.8",
+    "angular-route": "1.2.8",
+    "angular-animate": "1.2.8",
+    "bootstrap": "3.0.3",
+    "angular-bootstrap": "0.10.0",
+    "angular-ui-utils": "0.1.0",
+    "underscore": "1.6.0",
+    "jquery": "2.1.0",
+    "ng-file-upload": "1.2.8",
+    "jasny-bootstrap": "3.1.0",
+    "angularjs-scroll-glue": "0.0.1",
+    "bootstrap-select": "1.5.2",
+    "js-xls": "0.6.9",
+    "js-xlsx": "0.5.10"
+  }
+}
