@@ -33,7 +33,7 @@
 	</div>
 
   <div id="load_code_holder">
-    Enter code:<input type="text" name="loadCodeText" id="loadCodeText">
+    Enter code:<input type="text" name="loadCodeTextbox" id="loadCodeTextbox">
     <button type="button" onclick=loadJsCode()>Load</button>
   </div>
 
@@ -87,9 +87,15 @@
      
   function loadJsCode(){
     var request  = new XMLHttpRequest();
-    var requestUrl = '/sourceCode/' + document.getElementById("loadCodeText").value
+    var requestUrl = '/sourceCode/' + document.getElementById("loadCodeTextbox").value
     request.open('GET', requestUrl, false);
+    request.send(null);
 
+    if (request.status === 200) {
+        var reponse  = request.responseText;
+        var parsedJson = JSON.parse(reponse);
+        editor.setValue(parsedJson.codeContent);
+      }
   }   	
  	   	
  	function decideAutoCompletion(cm,event){
