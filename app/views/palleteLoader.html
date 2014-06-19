@@ -1,0 +1,117 @@
+<html>
+<head>
+<title>Acad 2015 JS Console</title>
+<script type="text/javascript"
+	src="http://www.autocadws.com/jsapi/v2/Autodesk.AutoCAD.js">
+    </script>
+
+<!-- Code Mirror Inclusion -->
+<link rel="stylesheet" href="codemirror-4.2/lib/codemirror.css">
+<link rel="stylesheet" href="codemirror-4.2/addon/hint/show-hint.css">
+<script src="codemirror-4.2/lib/codemirror.js"></script>
+<script src="codemirror-4.2/mode/javascript/javascript.js"></script>
+<script src="codemirror-4.2/addon/hint/show-hint.js"></script>
+<script src="codemirror-4.2/addon/hint/javascript-hint.js"></script>
+
+</head>
+<body>
+	Console Input:
+	<div id="input_holder">
+		<textarea name="input" id="input" cols="30" rows="5"
+			style="display: none;">
+     </textarea>
+	</div>
+
+	<br>
+
+	<div id="run_button_holder">
+		<button type="button" onclick=runJsCommand()>Run</button>
+	</div>
+	
+	<div id="share_button_holder">
+		<button type="button" onclick=shareJsCode()>Share</button>
+	</div>
+
+  <div id="load_code_holder">
+    Enter code:<input type="text" name="loadCodeText" id="loadCodeText">
+    <button type="button" onclick=loadJsCode()>Load</button>
+  </div>
+
+	<br> Console Output:
+	<div id="output_holder">
+		<textarea name="output" id="output" cols="40" rows="5" disabled></textarea>
+	</div>
+
+	<script type="text/javascript">
+	
+   	function runJsCommand(){
+   		var inputCommand = editor.getValue();
+   		try{
+   			// clear console output
+   			document.getElementById("output").value = "";
+   			eval(inputCommand);
+   		}
+   		catch(e){
+   			console.log("Error encountered: " + e.message);
+   		}
+   	}
+   	
+   	function shareJsCode(){
+   		var request  = new XMLHttpRequest();
+   		request.open('POST', '/sourceCode/create', false);
+      request.setRequestHeader("Content-Type","application/json");
+      
+   		var JSONObj = {'codeContent':editor.getValue()};
+
+   		request.send(JSON.stringify(JSONObj));
+   		
+   		if (request.status === 200) {
+   		  console.log(request.responseText);
+   		}
+   	}
+	
+   	console.log = function() {
+   	  var output = arguments[0];
+   	  document.getElementById("output").value = output;
+   	}.bind(console.log);
+   	
+   	console.warn = function() {
+     	  var output = arguments[0];
+     	  document.getElementById("output").value = output;
+     	}.bind(console.warn);
+
+       	console.error = function() {
+       	  var output = arguments[0];
+       	  document.getElementById("output").value = output;
+       	}.bind(console.error);     	
+     
+  function loadJsCode(){
+    var request  = new XMLHttpRequest();
+    var requestUrl = '/sourceCode/' + document.getElementById("loadCodeText").value
+    request.open('GET', requestUrl, false);
+
+  }   	
+ 	   	
+ 	function decideAutoCompletion(cm,event){
+ 		if((event.which > 64 && event.which <91)|| event.which == 190)// '.' is pressed
+ 			CodeMirror.showHint(cm, CodeMirror.hint.javascript);
+ 	}
+ 	
+    window.onload = function() {
+        CodeMirror.commands.autocomplete = function(cm) {
+            CodeMirror.showHint(cm, CodeMirror.hint.javascript);
+        };
+   	
+   	window.editor = CodeMirror.fromTextArea(input, {
+   	  mode:  "javascript",
+   	  lineNumbers:true,
+   	  lineWrapping:true,
+   	  extraKeys: {"Ctrl-Space":  "autocomplete"},
+   	});
+   	  	
+   	editor.on("keyup",decideAutoCompletion);
+    };
+   	</script>
+
+</body>
+</html>
