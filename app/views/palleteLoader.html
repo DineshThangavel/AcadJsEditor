@@ -5,6 +5,8 @@
 	src="http://www.autocadws.com/jsapi/v2/Autodesk.AutoCAD.js">
     </script>
 
+<link rel="stylesheet" href ="css/palleteLoader.css">
+
 <!-- Code Mirror Inclusion -->
 <link rel="stylesheet" href="codemirror-4.2/lib/codemirror.css">
 <link rel="stylesheet" href="codemirror-4.2/addon/hint/show-hint.css">
@@ -15,6 +17,7 @@
 
 </head>
 <body>
+  <div id="editor_pallette">
 	Console Input:
 	<div id="input_holder">
 		<textarea name="input" id="input" cols="30" rows="5"
@@ -41,14 +44,12 @@
 	<div id="output_holder">
 		<textarea name="output" id="output" cols="40" rows="5" disabled></textarea>
 	</div>
-
+</div>
 	<script type="text/javascript">
 	
    	function runJsCommand(){
    		var inputCommand = editor.getValue();
    		try{
-   			// clear console output
-   			document.getElementById("output").value = "";
    			eval(inputCommand);
    		}
    		catch(e){
@@ -72,17 +73,17 @@
 	
    	console.log = function() {
    	  var output = arguments[0];
-   	  document.getElementById("output").value = output;
+   	  document.getElementById("output").value = document.getElementById("output").value + "\n" +  output;
    	}.bind(console.log);
    	
    	console.warn = function() {
      	  var output = arguments[0];
-     	  document.getElementById("output").value = output;
+     	  document.getElementById("output").value = document.getElementById("output").value + "\n" + output;
      	}.bind(console.warn);
 
-       	console.error = function() {
+    console.error = function() {
        	  var output = arguments[0];
-       	  document.getElementById("output").value = output;
+       	  document.getElementById("output").value = document.getElementById("output").value + "\n" + output;
        	}.bind(console.error);     	
      
   function loadJsCode(){
@@ -107,12 +108,16 @@
         CodeMirror.commands.autocomplete = function(cm) {
             CodeMirror.showHint(cm, CodeMirror.hint.javascript);
         };
+
+        CodeMirror.commands.executeJsSript = runJsCommand;
    	
    	window.editor = CodeMirror.fromTextArea(input, {
    	  mode:  "javascript",
    	  lineNumbers:true,
    	  lineWrapping:true,
-   	  extraKeys: {"Ctrl-Space":  "autocomplete"},
+   	  extraKeys: {"Ctrl-Space":  "autocomplete",
+                  "Ctrl-Enter":   "executeJsSript"
+    },
    	});
    	  	
    	editor.on("keyup",decideAutoCompletion);
