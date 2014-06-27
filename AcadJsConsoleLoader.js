@@ -1,0 +1,1 @@
+Acad.Application.addPalette("Acad JS Console","http://localhost:3000/");

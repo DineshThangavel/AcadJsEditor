@@ -1,3 +1,36 @@
 #editor_pallette{
 	width:100%;
+	height:100%;
+	
+}
+.CodeMirror-wrap{
+	margin-left: 2%;
+	width: 94%;
+	margin-right: 2%
+}
+
+body{
+	background-color: lightgrey;
+	width: 100%
+}
+
+#output{
+	margin-left: 2%;
+	width: 94%;
+}
+
+#run_button_holder{
+	margin-left: 2%;
+}
+
+#share_button_holder{
+	margin-left: 2%;
+}
+
+#load_code_holder{
+	margin-left: 2%;
+}
+
+#share_result{
+	display:inline;
 }

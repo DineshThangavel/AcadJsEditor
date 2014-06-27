@@ -18,7 +18,7 @@
 </head>
 <body>
   <div id="editor_pallette">
-	Console Input:
+	<h3>Console Input:</h3>
 	<div id="input_holder">
 		<textarea name="input" id="input" cols="30" rows="5"
 			style="display: none;">
@@ -33,6 +33,7 @@
 	
 	<div id="share_button_holder">
 		<button type="button" onclick=shareJsCode()>Share</button>
+    <div id="share_result"></div>
 	</div>
 
   <div id="load_code_holder">
@@ -40,7 +41,8 @@
     <button type="button" onclick=loadJsCode()>Load</button>
   </div>
 
-	<br> Console Output:
+	<br>
+  <h3> Console Output: </h3>
 	<div id="output_holder">
 		<textarea name="output" id="output" cols="40" rows="5" disabled></textarea>
 	</div>
@@ -67,7 +69,17 @@
    		request.send(JSON.stringify(JSONObj));
    		
    		if (request.status === 200) {
-   		  console.log(request.responseText);
+   		  var responseDetails = JSON.parse(request.response);
+        var idToShare = responseDetails._id;
+        var textToAdd = "Please share the code " + idToShare + " with your friend!"
+
+        var resultElement = document.getElementById("share_result");
+        var spanNode = document.createElement("span");
+        var textNode=document.createTextNode(textToAdd);
+
+        spanNode.appendChild(textNode);
+        resultElement.appendChild(spanNode);
+        
    		}
    	}
 	
@@ -101,7 +113,7 @@
  	   	
  	function decideAutoCompletion(cm,event){
  		if((event.which > 64 && event.which <91)|| event.which == 190)// '.' is pressed
- 			CodeMirror.showHint(cm, CodeMirror.hint.javascript);
+ 			CodeMirror.showHint(cm, CodeMirror.hint.javascript,{completeSingle:false});
  	}
  	
     window.onload = function() {
