@@ -116,8 +116,12 @@
   }   	
  	   	
  	function decideAutoCompletion(cm,event){
- 		if((event.which > 64 && event.which <91)|| event.which == 190)// '.' is pressed
- 			CodeMirror.showHint(cm, CodeMirror.hint.javascript,{completeSingle:false});
+    if(event.ctrlKey || event.altKey){
+      return;
+    }
+    
+    if((event.which > 64 && event.which <91)|| event.which == 190)// '.' is pressed
+      CodeMirror.showHint(cm, CodeMirror.hint.javascript,{completeSingle:false});
  	}
  	
     window.onload = function() {
@@ -136,7 +140,7 @@
     },
    	});
    	  	
-   	editor.on("keyup",decideAutoCompletion);
+   	editor.on("keydown",decideAutoCompletion);
     };
    	</script>
 
